@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>面包节面</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.js"></script>
+    <style>
+        nav {
+            position: fixed;
+            top: 0;
+            background-color: #7c7064;
+            color: #e1e0d6;
+            height: 60px;
+            width: 100%;
+            line-height: 60px;
+            text-align: center;
+            font-size: 25px;
+            letter-spacing: 0.25em;
+            z-index: 1000;
+            box-shadow: 0 5px 10px #837d7d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        body {
+            font-family: '幼圆';
+            width: 100%;
+            height: 100vh;
+
+            background-color: #e1e0d6;
+
+        }
+
+        #app {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: flex-start;
+            gap: 20px;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .leftnav {
+            float: left;
+            list-style: none;
+            line-height: 50px;
+            height: 50px;
+            width: 490px;
+        }
+
+        .leftnav li {
+            line-height: 50px;
+            float: left;
+            margin-left: 20px;
+        }
+
+        a {
+            color: #e1e0d6;
+            text-decoration: none;
+            transition: 0.5s;
+        }
+
+        a:hover {
+            font-size: 1.5em;
+        }
+
+        .rightnav {
+            float: right;
+            list-style: none;
+            line-height: 50px;
+            height: 50px;
+            width: 550px;
+            padding-right: 20px;
+            /*margin-left: 80px;*/
+        }
+
+        .rightnav li {
+            line-height: 50px;
+            float: right;
+            margin-left: 20px;
+        }
+
+        .content {
+            margin-top: 80px;
+            width: 1280px;
+            display: grid;
+            gap: 30px;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .content .card {
+            width: 405px;
+            height: 300px;
+            /*background-color: white;*/
+            box-shadow: 5px 5px 10px #ccc;
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 10px;
+            gap: 25px;
+        }
+
+        .picture {
+            width: 350px;
+            margin-top: 10px;
+            height: 160px;
+            border-radius: 10px;
+        }
+
+        .name {
+            font-size: 30px;
+            letter-spacing: 0.2em;
+        }
+
+        .bottom {
+            display: flex;
+            align-items: baseline
+        }
+
+        i {
+            font-style: normal;
+            margin-right: 140px;
+            font-size: 25px;
+        }
+
+        .addCar {
+            width: 100px;
+            height: 40px;
+            font-size: 15px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            color: #e1e0d6;
+            background-color: #7c7064;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+        .addCar:hover{
+            transform: scale(1.2);
+        }
+        .success{
+            display: none;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-150px);
+            height: 60px;
+            width: 300px;
+            background-color: #ccc;
+            opacity: .8;
+            z-index: 10000;
+            border-radius: 10px;
+            color: green;
+            line-height: 60px;
+            align-items: center;
+            font-size:1.25em;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<div id="app">
+
+    <nav>
+        <ul class="leftnav">
+            <li><a href="http://localhost:8889/cakeIndex.html" >首页</a></li>
+            <li><a href="http://localhost:8889/cakeList.html" >蛋糕</a></li>
+            <li><a href="http://localhost:8889/littleFoodList.html">小食</a></li>
+            <li><a href="http://localhost:8889/cakeRollList.html">蛋糕卷</a></li>
+            <li><a href="http://localhost:8889/breadList.html" style="font-weight: 1000">面包</a></li>
+
+        </ul>
+
+        <ul class="rightnav">
+            <li><a class="exit" href="">退出</a></li>
+
+            <li><a class="userNameCar" href="http://localhost:8889/car.html"></a></li>
+        </ul>
+    </nav>
+    <div class="content">
+    </div>
+    <div class="success">
+        添加成功,可前往购物车查看!
+    </div>
+</div>
+<script>
+    document.querySelector('.exit').onclick = function(){
+        let result = confirm("Are you sure you want to exit?")
+        if (result){
+            this.href = 'http://localhost:8889/login.html'
+            deleteCookie('userName')
+        }else{
+            this.href = ''
+        }
+    }
+    function addSuccess(){
+        document.querySelector('.success').style.display = 'block';
+        setTimeout(()=>{
+            document.querySelector('.success').style.display = 'none';
+        },2000)
+    }
+    function renderBreadList(url,name, price,id){
+        let template = `<div class="card">
+                    <img class="picture"
+                         src="${url}"
+                         alt="">
+                    <p class="name">${name}</p>
+                    <span class="bottom"><i class="price">￥${price}</i> <button class="addCar" data-index="${id}">加入购物车</button></span>
+                </div>`
+        return template
+    }
+    const breadContent = document.querySelector('.content');
+    let breadList = []
+    async  function getBreadList() {
+        breadList = await axios.get("http://localhost:8889/getAllBreadServlet")
+        breadList = breadList.data
+        console.log(breadList)
+        for (let i = 0; i < breadList.length; i++) {
+            breadContent.innerHTML += renderBreadList(breadList[i].url,breadList[i].name,breadList[i].price,breadList[i].id)
+        }
+
+        // 获得cookie：
+        let userName = getCookie("userName");
+        console.log(userName);
+        let foodData = {}
+
+        //加入购物车
+        Array.from(document.querySelectorAll('.addCar')).forEach(item=>{
+            item.onclick = function () {
+                axios.get('http://localhost:8889/selectFoodServlet?id='+this.dataset.index).then(res=>{
+                    foodData = res.data
+                    axios.get('http://localhost:8889/addCarServlet?productName='+foodData.name+'&&productPrice='+foodData.price+'&&userName='+userName+'&&productUrl='+foodData.url).then(res=>{
+                        addSuccess()
+                    })
+                })
+            }
+        })
+    }
+    getBreadList()
+
+    //获得userName
+
+    function getCookie(name) {
+        let cookieArr = document.cookie.split(";");
+        for(let i = 0; i < cookieArr.length; i++) {
+            let cookiePair = cookieArr[i].split("=");
+            if(name == cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        return null;
+    }
+    function deleteCookie(cookieName) {
+        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+    // 使用方法：
+    let userName = getCookie("userName");
+    console.log(userName);
+
+    document.querySelector('.userNameCar').innerHTML = `${userName}的购物车`
+
+
+</script>
+</body>
+
+</html>

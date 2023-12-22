@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        body {
+            font-family: '幼圆';
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: flex-start;
+            gap: 200px;
+            flex-direction: column;
+            background-color: #e1e0d6;
+            align-items: center;
+
+        }
+
+
+        .box {
+            position: relative;
+            height: 474px;
+            width: 650px;
+            border: 2px solid #7c7064;
+            border-radius: 30px;
+            backdrop-filter: blur(15px);
+
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .nav {
+            display: flex;
+            position: absolute;
+            top: 0;
+            height: 50px;
+            width: 646px;
+            background: #7c7064;
+            border-radius: 30px 30px 0 0;
+        }
+
+        .nav .leftnav {
+            float: left;
+            list-style: none;
+            line-height: 50px;
+            height: 50px;
+            width: 400px;
+        }
+
+        .nav .leftnav li {
+            line-height: 50px;
+            float: left;
+            margin-left: 20px;
+        }
+
+        a {
+            color: #e1e0d6;
+            text-decoration: none;
+            transition: 0.5s;
+        }
+
+        a:hover {
+            font-size: 1.5em;
+        }
+
+        .nav .rightnav {
+            float: right;
+            list-style: none;
+            line-height: 50px;
+            height: 50px;
+            width: 200px;
+            margin-left: 80px;
+        }
+
+        .nav .rightnav li {
+            line-height: 50px;
+            float: left;
+            margin-left: 20px;
+        }
+
+        .banner h2 {
+            width: 100%;
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 600;
+            color: #7c7064;
+            text-shadow: 2px 2px 4px #ccc;
+            margin-bottom: 10px;
+        }
+
+
+        .banner {
+            position: absolute;
+            bottom: 0;
+            height: 420px;
+            width: 646px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            background-color: #d4ccc3;
+            border-radius: 0 0 30px 30px;
+        }
+
+        .banner .inputBox input {
+            padding-left: 10px;
+            border: 0px solid transparent;
+            border-radius: 25px;
+            outline: none;
+            font-size: 1.25em;
+            color: rgb(31, 35, 82);
+            width: 500px;
+            height: 50px;
+            margin-bottom: 30px;
+        }
+
+        .banner .inputBox input:focus {
+            transform-origin: center;
+            transition: .5s;
+            transform: scaleX(1.05);
+            box-shadow: inset 0px 0px 5px 2px #7c7064;
+        }
+
+
+        .banner .inputBox ::placeholder {
+            font-family: '幼圆';
+
+            color: #7c7064
+        }
+
+        .banner .inputBox #btn {
+            font-family: '幼圆';
+
+            border: none;
+            background-color: #7c7064;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.25em;
+            font-weight: 500;
+        }
+
+        .banner .inputBox #btn:hover {
+            font-size: 1.5em;
+            box-shadow: 0px 0px 5px black;
+            transition: 0.5s;
+        }
+
+        nav {
+            position: relative;
+            top: 0;
+            background-color: #7c7064;
+            color: #e1e0d6;
+            height: 60px;
+            width: 100%;
+            line-height: 60px;
+            text-align: center;
+            font-size: 40px;
+            letter-spacing: 0.25em;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>欢迎来到蛋糕商城</nav>
+    <div class="box">
+        <div class="nav">
+            <ul class="leftnav">
+                <li><a href="#">首页</a></li>
+                <li><a href="#">商品分类</a></li>
+                <li><a href="#">热销</a></li>
+                <li><a href="#">新品</a></li>
+                <li><a href="http://localhost:8889/register.html">注册</a></li>
+                <li><a href="#">登录</a></li>
+            </ul>
+
+            <ul class="rightnav">
+                <li><a href="#">搜索</a></li>
+                <li><a href="#">购物车</a></li>
+            </ul>
+        </div>
+
+        <div class="banner">
+            <h2>登录</h2>
+            <form action="/loginServlet" method="post">
+                <div class="inputBox">
+                    <input type="text" id="name" placeholder="请输入用户名" name="name">
+                </div>
+                <div class="inputBox">
+                    <input type="password" id="password" placeholder="请输入密码" name="password">
+                </div>
+                <div class="inputBox">
+                    <input type="submit" id="btn" value="登录">
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

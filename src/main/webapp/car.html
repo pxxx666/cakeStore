@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.js"></script>
+  <style>
+    nav {
+      position: fixed;
+      top: 0;
+      background-color: #7c7064;
+      color: #e1e0d6;
+      height: 60px;
+      width: 100%;
+      line-height: 60px;
+      text-align: center;
+      font-size: 25px;
+      letter-spacing: 0.25em;
+      z-index: 1000;
+      box-shadow: 0 5px 10px #837d7d;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+
+    }
+
+    body {
+      font-family: '幼圆';
+      width: 100%;
+      background-color: #e1e0d6;
+
+    }
+
+    #app {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: flex-start;
+      gap: 20px;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .leftnav {
+      float: left;
+      list-style: none;
+      line-height: 50px;
+      height: 50px;
+      width: 490px;
+    }
+
+    .leftnav li {
+      line-height: 50px;
+      float: left;
+      margin-left: 20px;
+    }
+
+    .leftnav a {
+      color: #e1e0d6;
+
+      transition: 0.5s;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+
+    .leftnav a:hover {
+      font-size: 1.5em;
+    }
+
+    .rightnav {
+      float: right;
+      list-style: none;
+      line-height: 50px;
+      height: 50px;
+      width: 550px;
+      padding-right: 20px;
+      /*margin-left: 80px;*/
+    }
+
+    .rightnav li {
+      line-height: 50px;
+      float: right;
+      margin-left: 20px;
+    }
+
+    .rightnav a:hover {
+      font-size: 1.5em;
+    }
+
+    .rightnav li a {
+      color: #e1e0d6;
+      transition: 0.5s;
+    }
+
+    .content {
+
+      margin-top: 80px;
+      width: 1280px;
+      display: grid;
+
+      grid-template-columns: 1fr;
+      font-size: 1.75em;
+      gap: 30px;
+    }
+
+    img {
+      border-radius: 5px;
+      height: 230px;
+    }
+
+    .product {
+      padding: 0 20px;
+      border-radius: 10px;
+      box-shadow: 5px 5px 8px #7c7064;
+      display: flex;
+      height: 250px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #cancel {
+      cursor: pointer;
+      color: #d4ccc3;
+      height: 40px;
+      width: 80px;
+      background-color: #db3017;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      transition: 0.5s;
+    }
+
+    #cancel:hover {
+      transform: scale(1.2);
+    }
+
+    .account {
+      margin-top: 20px;
+      font-size: 1.75em;
+      width: 1280px;
+      height: 60px;
+      line-height: 60px;
+      border-top: 3px solid #7c7064;
+      padding: 0 20px;
+    }
+
+    .account div {
+      float: right;
+    }
+
+    .settleAccount {
+      cursor: pointer;
+      color: #d4ccc3;
+      height: 40px;
+      width: 80px;
+      background-color: #1168b8d4;
+      margin-left: 30px;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      transition: 0.5s;
+    }
+
+    .settleAccount:hover {
+      transform: scale(1.2);
+    }
+
+    #mask {
+      width: 100%;
+      height: 100%;
+      z-index: 2000;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      /*background-color: rgba(228, 232, 240, 0.4);*/
+      /*display: flex;*/
+      /*justify-content: center;*/
+      /*align-items: center;*/
+      display: none;
+
+    }
+    #model{
+      padding: 20px 20px;
+      color: #d4ccc3;
+      position: fixed;
+      width:500px;
+      height: 350px;
+      background-color: #7c7064;
+      border-radius: 10px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      flex-direction: column;
+      gap: 30px;
+      box-shadow: 0 0 40px black;
+      margin-top: 300px;
+      margin-left: 500px;
+      /*transform: translateX(-250px);*/
+      /*transform: translateY(-175px);*/
+    }
+
+    form{
+      display: flex;
+      gap: 20px;
+      flex-direction: column;
+      font-size: 1.5em;
+    }
+    .title{
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+    .title i{
+      font-style: normal;
+      font-size: 1.75em;
+    }
+    #actuallyTotal{
+      height: 25px;
+    }
+    select{
+      height: 25px;
+    }
+    #submit{
+      cursor: pointer;
+      color: #d4ccc3;
+      height: 40px;
+      width: 80px;
+      margin-right: 10px;
+      background-color: #1168b8d4;
+      border-radius: 10px;
+      transition: 0.5s;
+      margin-left: 50px;
+      border: 1px solid transparent;
+    }
+    #submit:hover{
+      transform: scale(1.2);
+    }
+    #cancel{
+      margin-left: 20px;
+      cursor: pointer;
+      color: #d4ccc3;
+      height: 40px;
+      width: 80px;
+      background-color: #db3017;
+      border-radius: 10px;
+      transition: 0.5s;
+      border: 1px solid transparent;
+
+    }
+    #cancel:hover{
+      transform: scale(1.2);
+    }
+    .close{
+      cursor: pointer;
+      color: #1168b8d4;
+      transition: 0.5s;
+    }
+    .close:hover{
+      color: #db3017;
+    }
+  </style>
+</head>
+
+<body>
+<div id="app">
+  <div id="mask">
+    <div id="model">
+      <div class="title"><span><i>支付</i></span><span><i class="close">X</i></span></div>
+
+      <form>
+        <div>用户名:<span id="userName"></span></div>
+        <div>应付金额:<span id="shouldTotal"></span></div>
+        <div>实付金额:<input type="text" id="actuallyTotal"></div>
+        <div>支付方式:<select>
+          <option value="wx">微信</option>
+          <option value="zfb">支付宝</option>
+        </select></div>
+
+        <div><input type="button" value="确定" id="submit"><input type="button" value="取消" id="cancel"></div>
+      </form>
+    </div>
+  </div>
+  <nav>
+    <ul class="leftnav">
+      <li><a href="http://localhost:8889/cakeIndex.html">首页</a></li>
+      <li><a href="http://localhost:8889/cakeList.html">蛋糕</a></li>
+      <li><a href="http://localhost:8889/littleFoodList.html">小食</a></li>
+      <li><a href="http://localhost:8889/cakeRollList.html">蛋糕卷</a></li>
+      <li><a href="http://localhost:8889/breadList.html">面包</a></li>
+
+    </ul>
+
+    <ul class="rightnav">
+      <li><a class="exit" href="">退出</a></li>
+      <li><a class="userNameCar" href="http://localhost:8889/car.html" style="font-weight: 1000"></a></li>
+    </ul>
+  </nav>
+
+  <div class="content">
+
+  </div>
+
+  <div class="account">
+  </div>
+</div>
+<script>
+  document.querySelector('.exit').onclick = function(){
+    let result = confirm("Are you sure you want to exit?")
+    if (result){
+      this.href = 'http://localhost:8889/login.html'
+      deleteCookie('userName')
+    }else{
+      this.href = ''
+    }
+  }
+  //获得userName
+  function getCookie(name) {
+    let cookieArr = document.cookie.split(";");
+    for (let i = 0; i < cookieArr.length; i++) {
+      let cookiePair = cookieArr[i].split("=");
+      if (name == cookiePair[0].trim()) {
+        return decodeURIComponent(cookiePair[1]);
+      }
+    }
+    return null;
+  }
+  function deleteCookie(cookieName) {
+    document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  }
+  // 使用方法：
+  let userName = getCookie("userName");
+  console.log(userName);
+
+  document.querySelector('.userNameCar').innerHTML = `${userName}的购物车`
+  let content = document.querySelector('.content');
+  let account = document.querySelector('.account');
+
+  function renderCarList(productName, productPrice, productUrl, id){
+    let template = `
+          <div class="product">
+      <img src="${productUrl}"
+           alt="">
+      <span>${productName}</span>
+      <span>￥${productPrice}</span>
+      <span><button id="cancel" data-index="${id}">删除</button></span>
+    </div>
+    `
+    content.innerHTML += template
+  }
+  function getCarList(){
+    let result = 0
+    axios.get('http://localhost:8889/selectByUserNameServlet?userName='+userName).then(res=>{
+      let CarList = res.data
+
+      if (CarList.length !== 0){
+        CarList.forEach(item=>{
+          result += item.productPrice
+          renderCarList(item.productName,item.productPrice,item.productUrl,item.id)
+        })
+        account.innerHTML += `<div>
+      <span>总价：￥${result.toFixed(2)}</span>
+      <button class="settleAccount">结算</button>
+    </div>`
+      }
+
+      //删除订单
+      Array.from(document.querySelectorAll('#cancel')).forEach(item=>{
+        item.onclick = function(){
+          let result = confirm('亲爱的'+userName+'，您确定要删除该商品吗？')
+          if (result){
+            axios.get('http://localhost:8889/deleteByCarIdServlet?id='+this.dataset.index).then(res=>{
+              content.innerHTML = '';
+              account.innerHTML = ''
+              getCarList()
+            })
+          }
+        }
+      })
+
+
+      //结算功能
+      const mask = document.querySelector('#mask');
+      // 关闭模态框
+      document.querySelector('#cancel').onclick = () =>{
+        mask.style.display = 'none'
+        document.querySelector('#userName').innerHTML = ''
+        document.querySelector('#shouldTotal').innerHTML = ''
+      }
+      document.querySelector('.close').onclick = () =>{
+        mask.style.display = 'none'
+        document.querySelector('#userName').innerHTML = ''
+        document.querySelector('#shouldTotal').innerHTML = ''
+      }
+
+      document.querySelector('.settleAccount').onclick = () =>{
+        mask.style.display = 'block'
+        document.querySelector('#userName').innerHTML = userName
+        document.querySelector('#shouldTotal').innerHTML = result.toFixed(2)
+      }
+      document.querySelector('#submit').onclick = () => {
+
+        let shouldTotal = +document.getElementById('shouldTotal').innerHTML
+        let actuallyTotal = +document.getElementById('actuallyTotal').value
+        console.log(actuallyTotal,shouldTotal)
+        if (actuallyTotal > shouldTotal){
+          let result = confirm('亲爱的'+userName+'，您支付了'+actuallyTotal+'元，比应该支付的'+shouldTotal+'元多，是否继续?')
+          axios.get('http://localhost:8889/deleteByUserNameServlet?userName='+userName).then(res=>{
+            alert('找零'+(Number(actuallyTotal)-Number(shouldTotal)).toFixed(2)+'元')
+            mask.style.display = 'none'
+            document.querySelector('#userName').innerHTML = ''
+            document.querySelector('#shouldTotal').innerHTML = ''
+            document.getElementById('actuallyTotal').value = ''
+            content.innerHTML = '';
+            account.innerHTML = ''
+          })
+        }else {
+          alert('支付失败，少了'+(Number(shouldTotal)-Number(actuallyTotal)).toFixed(2)+'元')
+          mask.style.display = 'none'
+          document.querySelector('#userName').innerHTML = ''
+          document.querySelector('#shouldTotal').innerHTML = ''
+          document.getElementById('actuallyTotal').value = ''
+        }
+      }
+    })
+  }
+  getCarList()
+
+
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <button class="cake">发送蛋糕数据</button>
+    <button class="cakeRoll">发送蛋糕卷数据</button>
+    <button class="bread">发送面包数据</button>
+    <button class="littleFood">发送小食数据</button>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.js"></script>
+  <script>
+      axios.get('http://localhost:8888/selectByUserNameServlet?userName=马嘉祺').then(res=>{
+          console.log(res)
+      })
+
+  </script>
+</body>
+</html>

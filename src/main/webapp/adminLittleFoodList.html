@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员小食界面</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.js"></script>
+    <style>
+        nav {
+            position: fixed;
+            top: 0;
+            background-color: #7c7064;
+            color: #e1e0d6;
+            height: 60px;
+            width: 100%;
+            line-height: 60px;
+            text-align: center;
+            font-size: 25px;
+            letter-spacing: 0.25em;
+            z-index: 1000;
+            box-shadow: 0 5px 10px #837d7d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        body {
+            font-family: '幼圆';
+            width: 100%;
+            height: 100vh;
+
+            background-color: #e1e0d6;
+
+        }
+
+        #app {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: flex-start;
+            gap: 20px;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .leftnav {
+            float: left;
+            list-style: none;
+            line-height: 50px;
+            height: 50px;
+            width: 490px;
+        }
+
+        .leftnav li {
+            line-height: 50px;
+            float: left;
+            margin-left: 20px;
+        }
+
+
+        a {
+            color: #e1e0d6;
+            text-decoration: none;
+            transition: 0.5s;
+        }
+
+        a:hover {
+            font-size: 1.5em;
+        }
+        .rightnav {
+            float: right;
+            list-style: none;
+            line-height: 50px;
+            height: 50px;
+            width: 300px;
+            margin-left: 80px;
+        }
+
+        .rightnav li {
+            line-height: 50px;
+            float: left;
+            margin-left: 20px;
+        }
+        .rightnav a:hover{
+            font-size: 1.5em;
+        }
+        .rightnav li a{
+            color: #e1e0d6;
+            transition: 0.5s;
+        }
+
+
+
+        .content {
+            margin-top: 10px;
+            width: 1280px;
+            display: grid;
+            gap: 30px;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .content .card {
+            width: 405px;
+            height: 300px;
+            /*background-color: white;*/
+            box-shadow: 5px 5px 10px #ccc;
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 10px;
+            gap: 25px;
+            transition: 0.5s;
+        }
+        .content .card:hover{
+            transform: scale(1.05);
+            box-shadow: 8px 8px 16px #ccc;
+        }
+
+        .picture {
+            width: 350px;
+            margin-top: 10px;
+            height: 160px;
+            border-radius: 10px;
+        }
+
+        .name {
+            font-size: 30px;
+            letter-spacing: 0.2em;
+        }
+
+        .bottom {
+            display: flex;
+            align-items: baseline
+        }
+
+        i {
+            font-style: normal;
+            font-size: 25px;
+            margin-right: 30px;
+        }
+        .updateLittleFood{
+            cursor: pointer;
+            color: #d4ccc3;
+            height: 40px;
+            width: 80px;
+            margin-right: 10px;
+            background-color: #1168b8d4;
+            border-radius: 10px;
+            transition: 0.5s;
+        }
+        .updateLittleFood:hover{
+            transform: scale(1.2);
+        }
+        .deleteLittleFood{
+            cursor: pointer;
+            color: #d4ccc3;
+            height: 40px;
+            width: 80px;
+            background-color: #db3017;
+            border-radius: 10px;
+            transition: 0.5s;
+
+        }
+        .deleteLittleFood:hover{
+            transform: scale(1.2);
+        }
+
+        .addAndInquire{
+            margin-top: 80px;
+            line-height: 60px;
+            height: 60px;
+            width: 1280px;
+            border-bottom: 2px solid #7c7064;
+        }
+        input{
+            height: 30px;
+            width: 240px;
+        }
+        .addAndInquire i{
+            font-style: normal;
+            color: #7c7064;
+            margin-right: -5px;
+        }
+
+        .leftSpan{
+            float: left;
+        }
+
+        .rightSpan{
+            float: right;
+        }
+        .addLittleFood{
+            cursor: pointer;
+            color: #d4ccc3;
+            height: 40px;
+            width: 80px;
+            background-color: #7c7064;
+            border-radius: 10px;
+            transition: 0.5s;
+        }
+        .addLittleFood:hover{
+            transform: scale(1.2);
+        }
+        #mask {
+            width: 100%;
+            height: 100%;
+            z-index: 2000;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            /*background-color: rgba(228, 232, 240, 0.4);*/
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        #model{
+            padding: 20px 20px;
+            color: #d4ccc3;
+            position: fixed;
+            width:500px;
+            height: 350px;
+            background-color: #7c7064;
+            border-radius: 10px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-direction: column;
+            gap: 30px;
+            box-shadow: 0 0 40px black;
+        }
+
+        form{
+            display: flex;
+            gap: 20px;
+            flex-direction: column;
+        }
+        .title{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        #submit{
+            cursor: pointer;
+            color: #d4ccc3;
+            height: 40px;
+            width: 80px;
+            margin-right: 10px;
+            background-color: #1168b8d4;
+            border-radius: 10px;
+            transition: 0.5s;
+            margin-left: 50px;
+        }
+        #submit:hover{
+            transform: scale(1.2);
+        }
+        #cancel{
+            margin-left: 20px;
+            cursor: pointer;
+            color: #d4ccc3;
+            height: 40px;
+            width: 80px;
+            background-color: #db3017;
+            border-radius: 10px;
+            transition: 0.5s;
+        }
+        #cancel:hover{
+            transform: scale(1.2);
+        }
+        .close{
+            cursor: pointer;
+            color: #1168b8d4;
+            transition: 0.5s;
+        }
+        .close:hover{
+            color: #db3017;
+        }
+
+    </style>
+</head>
+
+<body>
+<div id="app">
+    <div id="mask">
+        <div id="model">
+            <div class="title"><span><i>添加&修改小食</i></span><span><i class="close">X</i></span></div>
+
+            <form>
+                <div>小食名称:<input type="text" name="name" id="name"></div>
+                <div>小食价格:<input type="text" name="price" id="price"></div>
+                <div>小食图片:<input type="text" name="url" id="url"></div>
+                <div><input type="button" value="确定" id="submit"><input type="button" value="取消" id="cancel"></div>
+            </form>
+        </div>
+    </div>
+
+    <nav>
+        <ul class="leftnav">
+            <li><a href="http://localhost:8889/adminCakeIndex.html" >首页</a></li>
+            <li><a href="http://localhost:8889/adminCakeList.html">蛋糕</a></li>
+            <li><a href="http://localhost:8889/adminLittleFoodList.html"  style="font-weight: 1000">小食</a></li>
+            <li><a href="http://localhost:8889/adminCakeRollList.html">蛋糕卷</a></li>
+            <li><a href="http://localhost:8889/adminBreadList.html">面包</a></li>
+        </ul>
+        <ul class="rightnav">
+            <li><a href="http://localhost:8889/adminOrder.html">查看订单</a></li>
+            <li><a class="exit" href="">退出</a></li>
+        </ul>
+    </nav>
+    <div class="addAndInquire">
+        <span class="leftSpan"><i>搜索：</i><input type="text" class="search"></span>
+        <span class="rightSpan"><button class="addLittleFood">添加小食</button></span>
+    </div>
+    <div class="content">
+    </div>
+</div>
+<script>
+    function deleteCookie(cookieName) {
+        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+    document.querySelector('.exit').onclick = function(){
+        let result = confirm("Are you sure you want to exit?")
+        if (result){
+            this.href = 'http://localhost:8889/login.html'
+            deleteCookie('userName')
+        }else{
+            this.href = ''
+        }
+    }
+    const littleFoodContent = document.querySelector('.content');
+    let littleFoodList = []
+
+    //渲染函数
+    function renderLittleFoodList(url,name, price,id){
+        let template = `<div class="card">
+                    <img class="picture"
+                         src="${url}"
+                         alt="">
+                    <p class="name">${name}</p>
+                    <span class="bottom"><i class="price">￥${price}</i><button class="updateLittleFood" data-index="${id}">修改</button><button class="deleteLittleFood" data-index="${id}">删除</button></span>
+                </div>`
+        return template
+    }
+
+    //清空列表
+    function clearLittleFoodList(){
+        littleFoodContent.innerHTML = ''
+    }
+
+    function getLittleFoodList() {
+        axios.get("http://localhost:8889/getAllLittleFoodServlet").then(res=>{
+            littleFoodList = res.data
+            let result = []
+            //查询
+            document.querySelector('.search').onblur = function () {
+                let searchValue = this.value.trim()
+
+                console.log(666)
+                result = littleFoodList.filter(littleFood=>littleFood.name.includes(searchValue))
+                console.log(result)
+                clearLittleFoodList()
+                for (let i = 0; i < result.length; i++) {
+                    littleFoodContent.innerHTML += renderLittleFoodList(result[i].url,result[i].name,result[i].price,result[i].id)
+                }
+                updateLittleFood()
+                deleteLittleFood()
+            }
+
+            console.log(result)
+
+            for (let i = 0; i < littleFoodList.length; i++) {
+                littleFoodContent.innerHTML += renderLittleFoodList(littleFoodList[i].url,littleFoodList[i].name,littleFoodList[i].price,littleFoodList[i].id)
+            }
+
+            //更新数据
+            function updateLittleFood(){
+                Array.from(document.querySelectorAll('.updateLittleFood')).forEach(item=>{
+                    item.onclick= function () {
+                        axios.get('http://localhost:8889/selectFoodServlet?id='+this.dataset.index).then(res=>{
+                            mask.style.display = 'flex'
+                            this.value = this.dataset.index
+                            let self = this
+                            document.getElementById('name').value = res.data.name
+                            document.getElementById('price').value = res.data.price
+                            document.getElementById('url').value = res.data.url
+
+                            document.querySelector('#submit').onclick = () => {
+                                let name = document.getElementById('name').value
+                                let price = document.getElementById('price').value
+                                let url = document.getElementById('url').value
+                                let type = '小食'
+                                // console.log(name, price, url, type)
+                                axios.get("http://localhost:8889/updateFoodServlet?name="+name+"&&price="+price+"&&url="+url+"&&type="+type+"&&id="+ self.value).then(res=>{
+                                    console.log('self:'+self.value)
+                                    clearLittleFoodList()
+                                    getLittleFoodList()
+                                    mask.style.display = 'none'
+                                    document.getElementById('name').value = ''
+                                    document.getElementById('price').value = ''
+                                    document.getElementById('url').value = ''
+                                })
+
+                            }
+                        })
+                    }
+                })
+            }
+            updateLittleFood()
+
+            //删除数据
+            function deleteLittleFood(){
+                Array.from(document.querySelectorAll('.deleteLittleFood')).forEach(item=>{
+                    // console.log(item)
+                    item.onclick= function () {
+                        // console.log(this.dataset.index)
+                        axios.get('http://localhost:8889/deleteFoodServlet?id='+this.dataset.index).then(res=>{
+                            clearLittleFoodList()
+                            getLittleFoodList()
+                        })
+
+                    }
+                })
+            }
+            deleteLittleFood()
+        })
+    }
+    getLittleFoodList()
+
+    const mask = document.querySelector('#mask');
+    // 关闭模态框
+    document.querySelector('#cancel').onclick = () =>{
+        mask.style.display = 'none'
+        document.getElementById('name').value = ''
+        document.getElementById('price').value = ''
+        document.getElementById('url').value = ''
+
+
+    }
+    document.querySelector('.close').onclick = () =>{
+        mask.style.display = 'none'
+        document.getElementById('name').value = ''
+        document.getElementById('price').value = ''
+        document.getElementById('url').value = ''
+    }
+
+    // 添加小食
+    document.querySelector('.addLittleFood').onclick = () =>{
+        mask.style.display = 'flex'
+    }
+
+    // 提交数据
+    document.querySelector('#submit').onclick = () => {
+        let name = document.getElementById('name').value
+        let price = document.getElementById('price').value
+        let url = document.getElementById('url').value
+        let type = '小食'
+        axios.get("http://localhost:8889/appendFoodServlet?name="+name+"&&price="+price+"&&url="+url+"&&type="+type).then(res=>{
+            clearLittleFoodList()
+            getLittleFoodList()
+            mask.style.display = 'none'
+            document.getElementById('name').value = ''
+            document.getElementById('price').value = ''
+            document.getElementById('url').value = ''
+        })
+
+    }
+
+    //获得userName
+    function getCookie(name) {
+        let cookieArr = document.cookie.split(";");
+        for(let i = 0; i < cookieArr.length; i++) {
+            let cookiePair = cookieArr[i].split("=");
+            if(name == cookiePair[0].trim()) {
+                return decodeURIComponent(cookiePair[1]);
+            }
+        }
+        return null;
+    }
+
+    // 使用方法：
+    let userName = getCookie("userName");
+    console.log(userName);
+</script>
+</body>
+
+</html>

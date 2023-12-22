@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        body {
+            font-family: '幼圆';
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: flex-start;
+            gap: 40px;
+            flex-direction: column;
+            background-color: #e1e0d6;
+            align-items: center;
+
+        }
+
+
+        .box {
+            position: relative;
+            height: 800px;
+            width: 650px;
+            border: 2px solid #7c7064;
+            border-radius: 30px;
+            backdrop-filter: blur(15px);
+
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .nav {
+            display: flex;
+            position: absolute;
+            top: 0;
+            height: 50px;
+            width: 646px;
+            background: #7c7064;
+            border-radius: 30px 30px 0 0;
+        }
+
+        .nav .leftnav {
+            float: left;
+            list-style: none;
+            line-height: 50px;
+            height: 50px;
+            width: 400px;
+        }
+
+        .nav .leftnav li {
+            line-height: 50px;
+            float: left;
+            margin-left: 20px;
+        }
+
+        a {
+            color: #e1e0d6;
+            text-decoration: none;
+            transition: 0.5s;
+        }
+
+        a:hover {
+            font-size: 1.5em;
+        }
+
+        .nav .rightnav {
+            float: right;
+            list-style: none;
+            line-height: 50px;
+            height: 50px;
+            width: 200px;
+            margin-left: 80px;
+        }
+
+        .nav .rightnav li {
+            line-height: 50px;
+            float: left;
+            margin-left: 20px;
+        }
+
+        .banner h2 {
+            width: 100%;
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 600;
+            color: #7c7064;
+            text-shadow: 2px 2px 4px #ccc;
+            margin-bottom: 10px;
+        }
+
+
+        .banner {
+            position: absolute;
+            bottom: 0;
+            height: 746px;
+            width: 646px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            background-color: #d4ccc3;
+            border-radius: 0 0 30px 30px;
+        }
+
+        .banner .inputBox input {
+            padding-left: 10px;
+            border: 0px solid transparent;
+            border-radius: 25px;
+            outline: none;
+            font-size: 1.25em;
+            color: rgb(31, 35, 82);
+            width: 500px;
+            height: 50px;
+            margin-bottom: 30px;
+        }
+
+        .banner .inputBox input:focus {
+            transform-origin: center;
+            transition: .5s;
+            transform: scaleX(1.05);
+            box-shadow: inset 0px 0px 5px 2px #7c7064;
+        }
+
+
+        .banner .inputBox ::placeholder {
+            font-family: '幼圆';
+
+            color: #7c7064
+        }
+
+        .banner .inputBox #btn {
+            font-family: '幼圆';
+
+            border: none;
+            background-color: #7c7064;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.25em;
+            font-weight: 500;
+        }
+
+        .banner .inputBox #btn:hover {
+            font-size: 1.5em;
+            box-shadow: 0px 0px 5px black;
+            transition: 0.5s;
+        }
+
+        nav {
+            position: relative;
+            top: 0;
+            background-color: #7c7064;
+            color: #e1e0d6;
+            height: 60px;
+            width: 100%;
+            line-height: 60px;
+            text-align: center;
+            font-size: 40px;
+            letter-spacing: 0.25em;
+        }
+        .inform{
+            display: none;
+            position: absolute;
+            bottom: 6px;
+            right: 0;
+            color: red;
+        }
+        .inputBox:nth-child(1){
+            position: relative;
+        }
+        .inputBox:nth-child(6){
+            position: relative;
+        }
+        .inputBox:nth-child(2){
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>欢迎来到蛋糕商城</nav>
+    <div class="box">
+        <div class="nav">
+            <ul class="leftnav">
+                <li><a href="#">首页</a></li>
+                <li><a href="#">商品分类</a></li>
+                <li><a href="#">热销</a></li>
+                <li><a href="#">新品</a></li>
+                <li><a href="#">注册</a></li>
+                <li><a href="http://localhost:8889/login.html">登录</a></li>
+            </ul>
+
+            <ul class="rightnav">
+                <li><a href="#">搜索</a></li>
+                <li><a href="#">购物车</a></li>
+            </ul>
+        </div>
+
+        <div class="banner">
+            <h2>注册新用户</h2>
+            <form action="/registerServlet" method="post">
+                <div class="inputBox">
+                    <input type="text" id="name" placeholder="请输入用户名" name="name">
+                    <div class="inform userInform">用户名已存在</div>
+                </div>
+                <div class="inputBox">
+                    <input type="email" id="email" placeholder="请输入邮箱" name="email">
+                    <div class="inform emailInform">电子邮箱格式: xxxxx@xx.xx</div>
+                </div>
+                <div class="inputBox">
+                    <input type="password" id="password" placeholder="请输入密码" name="password">
+                </div>
+                <div class="inputBox">
+                    <input type="text" id="consignee" placeholder="请输入收货人" name="consignee">
+                </div>
+                <div class="inputBox">
+                    <input type="text" id="address" placeholder="请输入收货地址" name="address">
+                </div>
+                <div class="inputBox">
+                    <input type="number" id="phone" placeholder="请输入收货电话" name="phone">
+                    <div class="inform phoneInform">电话号码:1.长度为11位 2.数字1开头</div>
+                </div>
+                <div class="inputBox">
+                    <input type="submit" id="btn" value="注册" onclick="return checkFormData();">
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.js"></script>
+    <script>
+        document.getElementById("name").onblur = function(){
+            let name = this.value;
+            axios.get("http://localhost:8889/selectUserServlet?name="+name).then(res=>{
+                if (''+res.data === 'false'){
+                    document.querySelector('.userInform').style.display = 'block';
+                }else {
+                    document.querySelector('.userInform').style.display = 'none';
+                }
+            })
+        }
+        document.getElementById("phone").onblur = function(){
+            let phone = this.value
+            const reg = /^1[0-9]{10}$/
+            if (!reg.test(phone)){
+                document.querySelector('.phoneInform').style.display = 'block';
+            }else {
+                document.querySelector('.phoneInform').style.display = 'none';
+            }
+        }
+        document.getElementById("email").onblur = function(){
+            let email = this.value
+            const reg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+            if (!reg.test(email)){
+                document.querySelector('.emailInform').style.display = 'block';
+            }else {
+                document.querySelector('.emailInform').style.display = 'none';
+            }
+        }
+
+        // 检查表单数据是否为空
+        function checkFormData() {
+           const name = document.getElementById("name").value;
+           const email = document.getElementById("email").value;
+           const password = document.getElementById("password").value;
+           const phone = document.getElementById("phone").value;
+           const address = document.getElementById("address").value;
+           const consignee = document.getElementById('consignee').value;
+
+            if (name === '' || email === '' || password === '' || phone === '' || address === '' || consignee === ''){
+                // 如果数据为空，显示提示信息并阻止提交
+                alert("注册填写不能为空!!!");
+                return false; // 阻止表单提交
+            }
+            if ( '' + document.querySelector('.userInform').style.display === 'block'){
+                alert("用户名已存在！！！");
+                return false; // 阻止表单提交
+            }
+            if ( '' + document.querySelector('.phoneInform').style.display === 'block'){
+                alert("电话号码格式错误!!!");
+                return false; // 阻止表单提交
+            }
+            if ( '' + document.querySelector('.emailInform').style.display === 'block'){
+                alert("电子邮箱格式错误!!!");
+                return false; // 阻止表单提交
+            }
+            else {
+                // 如果数据不为空，允许提交表单
+                return true;
+            }
+        }
+
+
+
+    </script>
+
+
+</body>
+
+</html>

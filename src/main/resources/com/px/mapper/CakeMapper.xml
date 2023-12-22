@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.px.mapper.CakeMapper">
+    <insert id="addFood">
+        insert into cake(name,price,type,url) values(#{name},#{price},#{type},#{url})
+    </insert>
+    <update id="updateFood">
+        update cake set name = #{name},price = #{price},type = #{type},url = #{url} where id = #{id}
+    </update>
+    <delete id="deleteById">
+        delete from cake where id = #{id}
+    </delete>
+
+    <select id="getAllCakes" resultType="com.px.pojo.Food">
+        select * from cake where type = '蛋糕'
+    </select>
+    <select id="getAllCakeRolls" resultType="com.px.pojo.Food">
+        select * from cake where type = '蛋糕卷'
+    </select>
+    <select id="getAllBread" resultType="com.px.pojo.Food">
+        select  * from cake where type = '面包'
+    </select>
+    <select id="getAllLittleFood" resultType="com.px.pojo.Food">
+        select * from cake where type = '小食'
+    </select>
+    <select id="selectById" resultType="com.px.pojo.Food">
+        select * from cake where id = #{id}
+    </select>
+
+</mapper>
