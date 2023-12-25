@@ -1,3 +1,4 @@
+// 添加中文注释后
 package com.px.mapper;
 
 import com.px.pojo.User;
@@ -8,5 +9,6 @@ public interface UserMapper {
     User selectUser(@Param("name") String name, @Param("password") String password);
     // 添加用户
     void addUser(User user);
+    // 根据用户名查询用户
     User selectByName(@Param("name") String name);
 }

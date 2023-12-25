@@ -19,24 +19,34 @@ import java.nio.charset.StandardCharsets;
 public class SelectUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 获取请求参数
         String name = req.getParameter("name");
+        // 将请求参数从ISO_8859_1编码转换为UTF_8编码
         name = new String(name.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
 
+        // 获取SqlSessionFactory
         SqlSessionFactory sqlSessionFactory = SqlSessionFactoryUtils.getSqlSessionFactory();
+        // 获取SqlSession
         SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        // 获取UserMapper
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        // 根据用户名查询用户
         User user = userMapper.selectByName(name);
+        // 获取响应输出流
         PrintWriter writer = resp.getWriter();
+        // 判断查询结果
         if (user == null){
            writer.write("true");
         }else {
             writer.write("false");
         }
+        // 关闭SqlSession
         sqlSession.close();
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 调用doGet方法
         this.doGet(req, resp);
     }
 }

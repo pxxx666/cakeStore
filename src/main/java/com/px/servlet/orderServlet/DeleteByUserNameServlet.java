@@ -17,19 +17,28 @@ import java.nio.charset.StandardCharsets;
 public class DeleteByUserNameServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 设置请求和响应的字符编码
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json;charset=utf-8");
+        // 获取请求参数
         String userName = req.getParameter("userName");
+        // 将请求参数转换为utf-8编码
         userName = new String(userName.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+        // 获取SqlSessionFactory
         SqlSessionFactory sqlSessionFactory = SqlSessionFactoryUtils.getSqlSessionFactory();
+        // 获取SqlSession
         SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        // 获取OrderMapper
         OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+        // 调用OrderMapper的deleteByUserName方法
         orderMapper.deleteByUserName(userName);
+        // 关闭SqlSession
         sqlSession.close();
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 调用doGet方法
         this.doGet(req, resp);
     }
 }

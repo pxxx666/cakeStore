@@ -22,21 +22,32 @@ import java.util.List;
 public class GetAllOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //设置请求和响应的字符编码
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json;charset=utf-8");
+        //获取SqlSessionFactory
         SqlSessionFactory sqlSessionFactory = SqlSessionFactoryUtils.getSqlSessionFactory();
+        //获取SqlSession
         SqlSession sqlSession = sqlSessionFactory.openSession();
+        //获取OrderMapper
         OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+        //获取所有订单
         List<Order> allOrder = orderMapper.getAllOrder();
+        //获取响应输出流
         PrintWriter writer = resp.getWriter();
+        //创建ObjectMapper对象
         ObjectMapper objectMapper = new ObjectMapper();
+        //将订单列表转换为JSON字符串
         String orderData = objectMapper.writeValueAsString(allOrder);
+        //将JSON字符串写入响应
         writer.write(orderData);
+        //关闭SqlSession
         sqlSession.close();
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //调用doGet方法
         this.doGet(req, resp);
     }
 }

@@ -27,11 +27,13 @@ public class AddFoodServlet extends HttpServlet {
 //        String encode = URLEncoder.encode()
         //实例化user对象
         Food food = new Food();
+        //获取参数
         String name = req.getParameter("name");
         String url = req.getParameter("url");
         double  price = Double.parseDouble(req.getParameter("price"));
         String type = req.getParameter("type");
 
+        //将参数转换为String类型
         name = new String(name.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
         url = new String(url.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
         type = new String(type.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);

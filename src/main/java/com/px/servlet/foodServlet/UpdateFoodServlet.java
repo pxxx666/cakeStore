@@ -22,25 +22,37 @@ public class UpdateFoodServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html;charset=UTF-8");
         Food food = new Food();
+        //获取id
         int id = Integer.parseInt(req.getParameter("id"));
+        //获取name
         String name = req.getParameter("name");
+        //获取url
         String url = req.getParameter("url");
+        //获取price
         double  price = Double.parseDouble(req.getParameter("price"));
+        //获取type
         String type = req.getParameter("type");
 
+        //将name，url，type转换为utf-8编码
         name = new String(name.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
         url = new String(url.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
         type = new String(type.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+        //将参数设置到food对象中
         food.setId(id);
         food.setName(name);
         food.setUrl(url);
         food.setType(type);
         food.setPrice(price);
 
+        //获取SqlSessionFactory
         SqlSessionFactory sqlSessionFactory = SqlSessionFactoryUtils.getSqlSessionFactory();
+        //获取SqlSession
         SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        //获取CakeMapper
         CakeMapper cakeMapper = sqlSession.getMapper(CakeMapper.class);
+        //更新food
         cakeMapper.updateFood(food);
+        //关闭SqlSession
         sqlSession.close();
 
     }

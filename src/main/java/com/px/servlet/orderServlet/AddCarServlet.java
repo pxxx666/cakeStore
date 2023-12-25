@@ -26,14 +26,17 @@ public class AddCarServlet extends HttpServlet {
 //        String encode = URLEncoder.encode()
         //实例化user对象
         Car car = new Car();
+        //获取参数
         String productName = req.getParameter("productName");
         double productPrice = Double.parseDouble(req.getParameter("productPrice"));
         String userName = req.getParameter("userName");
         String productUrl = req.getParameter("productUrl");
 
+        //将参数转换为字符串
         productName = new String(productName.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
         userName = new String(userName.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
         productUrl = new String(productUrl.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+        //设置参数
         car.setProductUrl(productUrl);
         car.setUserName(userName);
         car.setProductName(productName);
@@ -43,6 +46,7 @@ public class AddCarServlet extends HttpServlet {
         //获取SqlSession
         SqlSession sqlSession = sqlSessionFactory.openSession(true);
         OrderMapper orderMapper = sqlSession.getMapper(OrderMapper.class);
+        //调用mapper中的方法
         orderMapper.insertCar(car);
         //关闭SqlSession
         sqlSession.close();

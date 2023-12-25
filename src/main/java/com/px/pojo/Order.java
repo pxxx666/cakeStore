@@ -1,7 +1,9 @@
 package com.px.pojo;
 
 public class Order {
+    //用户名
     private String userName;
+    //总价
     private double total;
 
     public String getUserName() {

@@ -3,10 +3,15 @@ package com.px.pojo;
 import java.nio.charset.Charset;
 
 public class Food {
+    //id
     private int id;
+    //名称
     private String name;
+    //价格
     private Double price;
+    //图片路径
     private String url;
+    //类型
     private String type;
 
     public int getId() {
