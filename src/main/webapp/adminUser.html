@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员人员信息界面</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.5.0/axios.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-/mhDoLbDldZc3qpsJHpLogda//BVZbgYuw6kof4u2FrCedxOtgRZDTHgHUhOCVim"
+            crossorigin="anonymous"></script>
+    <style>
+        nav {
+            position: fixed;
+            top: 0;
+            background-color: #7c7064;
+            color: #e1e0d6;
+            height: 60px;
+            width: 100%;
+            line-height: 60px;
+            text-align: center;
+            font-size: 25px;
+            letter-spacing: 0.25em;
+            z-index: 1000;
+            box-shadow: 0 5px 10px #837d7d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        body {
+            font-family: '幼圆';
+            width: 100%;
+            height: 100vh;
+
+            background-color: #e1e0d6;
+
+        }
+
+        #app {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: flex-start;
+            gap: 20px;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .leftnav {
+            float: left;
+            list-style: none;
+            line-height: 50px;
+            height: 50px;
+            width: 490px;
+        }
+
+        .leftnav li {
+            line-height: 50px;
+            float: left;
+            margin-left: 20px;
+        }
+
+
+        a {
+            color: #e1e0d6;
+            text-decoration: none;
+            transition: 0.5s;
+        }
+
+        a:hover {
+            font-size: 1.5em;
+        }
+
+        .rightnav {
+            float: right;
+            list-style: none;
+            line-height: 50px;
+            height: 50px;
+            width: 550px;
+            margin-left: 80px;
+        }
+
+        .rightnav li {
+            line-height: 50px;
+            float: left;
+            margin-left: 20px;
+        }
+
+        .rightnav a:hover {
+            font-size: 1.5em;
+        }
+
+        .rightnav li a {
+            color: #e1e0d6;
+            transition: 0.5s;
+        }
+
+        table {
+            margin-top: 80px;
+        }
+
+        thead th {
+            color: #7c7064;
+        }
+        tr {
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+<div id="app">
+    <nav>
+        <ul class="leftnav">
+            <li><a href="http://localhost:8889/adminCakeIndex.html">首页</a></li>
+            <li><a href="http://localhost:8889/adminCakeList.html">蛋糕</a></li>
+            <li><a href="http://localhost:8889/adminLittleFoodList.html">小食</a></li>
+            <li><a href="http://localhost:8889/adminCakeRollList.html">蛋糕卷</a></li>
+            <li><a href="http://localhost:8889/adminBreadList.html">面包</a></li>
+        </ul>
+        <ul class="rightnav">
+            <li><a href="http://localhost:8889/adminOrder.html" >查看订单</a></li>
+            <li><a href="http://localhost:8889/adminUser.html" style="font-weight: 1000">查看用户信息</a></li>
+
+            <li><a class="exit" href="">退出</a></li>
+        </ul>
+    </nav>
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+        <tr>
+            <th scope="col">用户名</th>
+            <th scope="col">电子邮件</th>
+            <th scope="col">收货人</th>
+            <th scope="col">收货地址</th>
+            <th scope="col">联系电话</th>
+            <th scope="col">用户类型</th>
+        </tr>
+        </thead>
+        <tbody>
+
+
+        </tbody>
+    </table>
+</div>
+<script>
+    function deleteCookie(cookieName) {
+        document.cookie = cookieName + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    }
+
+    document.querySelector('.exit').onclick = function () {
+        let result = confirm("Are you sure you want to exit?")
+        if (result) {
+            this.href = 'http://localhost:8889/login.html'
+            deleteCookie('userName')
+        } else {
+            this.href = ''
+        }
+    }
+    const tbody = document.querySelector('tbody')
+    function renderUserList(name,email,consignee,address,phone,vip){
+        if(vip == '1'){
+            vip = '普通用户'
+        }else {
+            vip = 'VIP用户'
+        }
+        if (name === 'admin'){
+            vip = '管理员'
+        }
+        let template = `
+    <tr>
+      <th scope="row">${name}</th>
+      <td>${email}</td>
+      <td>${consignee}</td>
+      <td>${address}</td>
+      <td>${phone}</td>
+      <td>${vip}</td>
+    </tr>
+    `
+        tbody.innerHTML += template
+    }
+    function getAllUsers(){
+        let usersData = []
+        axios.get('http://localhost:8889/selectAllUserServlet').then(res=>{
+            usersData = res.data
+            usersData.forEach(item=>{
+                renderUserList(item.name,item.email,item.consignee,item.address,item.phone,item.vip)
+            })
+
+        })
+    }
+    getAllUsers()
+
+</script>
+</body>
+
+</html>

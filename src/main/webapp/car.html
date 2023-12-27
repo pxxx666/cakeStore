@@ -403,9 +403,19 @@
       }
 
       document.querySelector('.settleAccount').onclick = () =>{
-        mask.style.display = 'block'
-        document.querySelector('#userName').innerHTML = userName
-        document.querySelector('#shouldTotal').innerHTML = result.toFixed(2)
+        axios.get("http://localhost:8889/selectByNameReturnUserServlet?name="+userName).then(res=>{
+          mask.style.display = 'block'
+
+          if (res.data.vip === 2){
+            document.querySelector('#userName').innerHTML = userName + '(VIP)'
+            document.querySelector('#userName').style.color = 'gold'
+            document.querySelector('#shouldTotal').innerHTML = (result * 0.7).toFixed(2)
+          }else {
+            document.querySelector('#userName').innerHTML = userName
+            document.querySelector('#shouldTotal').innerHTML = (result).toFixed(2)
+          }
+        })
+
       }
       document.querySelector('#submit').onclick = () => {
 
@@ -414,15 +424,18 @@
         console.log(actuallyTotal,shouldTotal)
         if (actuallyTotal > shouldTotal){
           let result = confirm('亲爱的'+userName+'，您支付了'+actuallyTotal+'元，比应该支付的'+shouldTotal+'元多，是否继续?')
-          axios.get('http://localhost:8889/deleteByUserNameServlet?userName='+userName).then(res=>{
-            alert('找零'+(Number(actuallyTotal)-Number(shouldTotal)).toFixed(2)+'元')
-            mask.style.display = 'none'
-            document.querySelector('#userName').innerHTML = ''
-            document.querySelector('#shouldTotal').innerHTML = ''
-            document.getElementById('actuallyTotal').value = ''
-            content.innerHTML = '';
-            account.innerHTML = ''
-          })
+          if (result){
+            axios.get('http://localhost:8889/deleteByUserNameServlet?userName='+userName).then(res=>{
+              alert('找零'+(Number(actuallyTotal)-Number(shouldTotal)).toFixed(2)+'元')
+              mask.style.display = 'none'
+              document.querySelector('#userName').innerHTML = ''
+              document.querySelector('#shouldTotal').innerHTML = ''
+              document.getElementById('actuallyTotal').value = ''
+              content.innerHTML = '';
+              account.innerHTML = ''
+            })
+          }
+
         }else {
           alert('支付失败，少了'+(Number(shouldTotal)-Number(actuallyTotal)).toFixed(2)+'元')
           mask.style.display = 'none'
@@ -435,7 +448,9 @@
   }
   getCarList()
 
-
+  axios.get("http://localhost:8889/selectByNameReturnUserServlet?name="+userName).then(res=>{
+    if (res.data.vip === 2)document.querySelector('.userNameCar').style.color = 'gold'
+  })
 
 </script>
 

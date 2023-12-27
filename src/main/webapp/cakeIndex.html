@@ -312,6 +312,22 @@
             margin-bottom: 10px;
         }
 
+        .beVip{
+            cursor: pointer;
+            color: #d4ccc3;
+            height: 40px;
+            width: 80px;
+            background-color: #8f833d;
+            border-radius: 10px;
+            transition: 0.5s;
+            border: 1px solid transparent;
+
+        }
+        .beVip:hover{
+            transform: scale(1.2);
+            box-shadow: 0 0 10px gold;
+        }
+
     </style>
 </head>
 
@@ -417,6 +433,8 @@
                 <li>蛋糕需在零下5°下保存，并在保质期内吃完</li>
                 <li>店铺于7：00-22：00开放使用</li>
                 <li>充值vip可享用7折优惠</li>
+                <li>点击下方按钮，升级VIP</li>
+                <li><button class="beVip">VIP</button></li>
             </ul>
             <div>
                 <h2>联系我们</h2>
@@ -599,6 +617,18 @@
             let userName = getCookie("userName");
             console.log(userName);
             document.querySelector('.userNameCar').innerHTML = `${userName}的购物车`
+            document.querySelector('.beVip').onclick = function (){
+                let result = confirm('亲爱的'+userName+',您是否要升级为VIP会员？')
+                if(result){
+                    axios.get("http://localhost:8889/upgradeServlet?name="+userName).then(res=>{
+                        console.log(res)
+                        document.querySelector('.userNameCar').style.color = 'gold'
+                    })
+                }
+            }
+            axios.get("http://localhost:8889/selectByNameReturnUserServlet?name="+userName).then(res=>{
+                if (res.data.vip === 2)document.querySelector('.userNameCar').style.color = 'gold'
+            })
         </script>
 
     </div>

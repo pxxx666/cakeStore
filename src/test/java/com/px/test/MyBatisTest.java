@@ -189,4 +189,15 @@ public class MyBatisTest {
         //打印查询结果
         System.out.println(allOrder);
     }
+
+    @Test
+    public void getVip(){
+        //获取UserMapper
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        userMapper.upgradeVIP("马嘉祺");
+        sqlSession.close();
+
+    }
+
+
 }

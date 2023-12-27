@@ -266,6 +266,9 @@
     console.log(userName);
 
     document.querySelector('.userNameCar').innerHTML = `${userName}的购物车`
+    axios.get("http://localhost:8889/selectByNameReturnUserServlet?name="+userName).then(res=>{
+        if (res.data.vip === 2)document.querySelector('.userNameCar').style.color = 'gold'
+    })
 </script>
 </body>
 
