@@ -48,4 +48,6 @@ html，css，JavaScript，axios，bootstrap，mybatis，maven，servlet，filter
 
 window版本：window10 x64
 
-软件使用：Intellij IDEA，Navicat，VSCode
+软件使用：Intellij IDEA，Navicat，VSCode 
+
+## 系统功能需求
