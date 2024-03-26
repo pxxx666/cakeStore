@@ -182,11 +182,16 @@
         renderOrderList(index+1,item.userName,item.total.toFixed(2))
       })
       Array.from((document.querySelectorAll('.btn'))).forEach(item=>{
+
         item.onclick = function () {
-          axios.get('http://localhost:8889/deleteByUserNameServlet?userName='+this.dataset.index).then(res=>{
-            tbody.innerHTML = ''
-            getAllOrder()
-          })
+          let result = confirm("Are you sure you want to delete?")
+          if (result){
+            axios.get('http://localhost:8889/deleteByUserNameServlet?userName='+this.dataset.index).then(res=>{
+              tbody.innerHTML = ''
+              getAllOrder()
+            })
+          }
+
         }
       })
     })
